@@ -2,10 +2,12 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import math as m
+
 def add_piece(x_,y_, board, piece):
-    white = [255,255,255]
+    if piece == None:
+        return board
     rgb = np.asarray([piece[:,:,0], piece[:,:,1], piece[:,:,2]])
-    mask = (rgb[0] < 230) & (rgb[1] < 230) & (rgb[2] < 230)
+    mask = (rgb[0] != 255) & (rgb[1] != 255) & (rgb[2] != 255)
 
     x = board.shape[0]/8
     y = board.shape[1]/8
@@ -21,20 +23,33 @@ def add_piece(x_,y_, board, piece):
 
 board = cv2.imread("images/board.jpg")
 board = cv2.cvtColor(board, cv2.COLOR_BGR2RGB)
-red = cv2.imread("images/red.jpg")
+red = cv2.imread("images/red.png")
 red = cv2.cvtColor(red, cv2.COLOR_BGR2RGB)
-x = board.shape[0]/8
-y = board.shape[1]/8
 
-
-
-black = cv2.imread("images/black.jpg")
-for i in range(8):
-    for j in range(8):
-        board = add_piece(i,j, board, red)
-sigma = 1
+black = cv2.imread("images/black.png")
+red_king = cv2.imread("images/red_king.png")
+black_king = cv2.imread("images/black_king.png")
+red_king = cv2.cvtColor(red_king, cv2.COLOR_BGR2RGB)
+black_king = cv2.cvtColor(black_king, cv2.COLOR_BGR2RGB)
+x = 0
+y = 0
+setup = [[None, red, None, red, None, red, None, red],
+[red, None,red, None,red_king, None,red, None],
+[None, red, None, red, None, red, None, red],
+[None, None,None,None,None,None,None,None],[None, None,None,None,None,None,None,None],
+[None, black, None, black_king, None, black, None, black],
+[black, None,black, None,black, None,black, None],
+[None, black, None, black, None, black, None, black]]
+for row in setup:
+    y = 0
+    for piece in row:
+        board = add_piece(x,y, board, piece)
+        y+=1
+    x+=1
+sigma = 2
 ksize = (2*sigma+1,2*sigma+1)
 board = cv2.GaussianBlur(board, ksize, sigma)
+
 plt.imshow(board)
 plt.axis("off")
 plt.show()
