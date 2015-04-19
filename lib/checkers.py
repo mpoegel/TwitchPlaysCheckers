@@ -1,6 +1,8 @@
 # ==============================================================================
+# TwitchPlaysCheckers
+# HackRU Spring 2015 -- 4/18/2015
 #
-#
+# Checker Game Manager Wrapper Class
 # ==============================================================================
 import copy
 
@@ -70,6 +72,7 @@ class CheckersManager(object):
 				board[x+1][y+1].getOwner() != player and
 				not board[x+2][y+2]):
 				boardcp[x][y] = None
+				self.__score[board[x+1][y+1].getOwner()] -= 1
 				boardcp[x+1][y+1] = None
 				boardcp[x+2][y+2] = puck
 				if (xp == x+2 and yp == y+2):
@@ -83,6 +86,7 @@ class CheckersManager(object):
 				board[x+1][y-1].getOwner() != player and
 				not board[x+2][y-2]):
 				boardcp[x][y] = None
+				self.__score[board[x+1][y-1].getOwner()] -= 1
 				boardcp[x+1][y-1] = None
 				boardcp[x+2][y-2] = puck
 				if (xp == x+2 and yp == y-2):
@@ -98,6 +102,7 @@ class CheckersManager(object):
 				board[x-1][y+1].getOwner() != player and
 				not board[x-2][y+2]):
 				boardcp[x][y] = None
+				self.__score[board[x-1][y+1].getOwner()] -= 1
 				boardcp[x-1][y+1] = None
 				boardcp[x-2][y+2] = puck
 				if (xp == x-2 and yp == y+2):
@@ -110,7 +115,8 @@ class CheckersManager(object):
 				board[x-1][y-1].getOwner() != player and
 				not board[x-2][y-2]):
 				boardcp[x][y] = None
-				boardcp[x-2][y-2] = None
+				self.__score[board[x-1][y-1].getOwner()] -= 1
+				boardcp[x-1][y-1] = None
 				boardcp[x-2][y-2] = puck
 				if (xp == x-2 and yp == y-2):
 					self.__board = copy.deepcopy(boardcp)
@@ -154,23 +160,38 @@ class CheckersManager(object):
 			if (xp == x+1 and yp == y+1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				if ((player == 'A' and xp == BOARD_SIZE-1) or
+					(player == 'B' and xp == 0)):
+					self__board[xp][yp].kingMe()
 				return True
 			elif (xp == x+1 and yp == y-1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				if ((player == 'A' and xp == BOARD_SIZE-1) or
+					(player == 'B' and xp == 0)):
+					self__board[xp][yp].kingMe()
 				return True
 		elif (player == 'B' or (player == 'A' and puck.isKing())):
 			if (xp == x-1 and yp == y+1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				if ((player == 'A' and xp == BOARD_SIZE-1) or
+					(player == 'B' and xp == 0)):
+					self__board[xp][yp].kingMe()
 				return True
 			elif (xp == x-1 and yp == y-1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				if ((player == 'A' and xp == BOARD_SIZE-1) or
+					(player == 'B' and xp == 0)):
+					self__board[xp][yp].kingMe()
 				return True
 		if (self.__isValidMove(player, x, y, xp, yp, copy.deepcopy(self.__board))):
 			self.__board[x][y] = None
 			self.__board[xp][yp] = puck
+			if ((player == 'A' and xp == BOARD_SIZE-1) or
+				(player == 'B' and xp == 0)):
+				self__board[xp][yp].kingMe()
 			return True
 
 		print("Move failed")
