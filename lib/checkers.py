@@ -175,7 +175,7 @@ class CheckersManager(object):
 					(player == 'B' and xp == 0)):
 					self.__board[xp][yp].kingMe()
 				return True
-		elif (player == 'B' or (player == 'A' and puck.isKing())):
+		if (player == 'B' or (player == 'A' and puck.isKing())):
 			if (xp == x-1 and yp == y+1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
