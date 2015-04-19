@@ -81,7 +81,14 @@ class TwitchChatReader():
 					else:
 						continue
 
-					return (r0, c0), (r1, c1)
+					return (r0-1, c0-1), (r1-1, c1-1)
+
+					'''
+	def post_move(r0, c0, r1, c0):
+		alphabet = " ABCDEFGH"
+		if 1 <= r0 <= 8 and 1 <= c0 <= 8 and 1 <= r1 <= 8 and 1 <= c0 <= 8:
+			self.irc.send("PRIVMSG " + self.channel + " :Twitch chose to jump from" + r0 + c0 + " to " + r1 + c1 + "\n")
+			'''
 
 	def stop(self):
 		self.irc.close()
