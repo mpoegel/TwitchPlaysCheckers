@@ -87,7 +87,7 @@ class TwitchChatReader():
 		self.irc.close()
 
 #################### MAIN - TEST ############################
-
+'''
 if __name__ == '__main__':
 	userInput = TwitchChatReader()
 	while(True):	
@@ -95,3 +95,4 @@ if __name__ == '__main__':
 		print "MOVE COMMAND: %s" %(str(nextMove))
 
 	userInput.stop()
+'''
