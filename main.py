@@ -7,6 +7,7 @@
 import sys
 import random
 import time
+import make_board
 sys.path.append('lib')
 
 from checkers import CheckersManager
@@ -15,7 +16,7 @@ from twitch_chat_reader import TwitchChatReader
 # from make_board import drawBoard
 import ai
 
-
+	
 def main():
 
 	Game = CheckersManager()
@@ -29,12 +30,16 @@ def main():
 		move = ai.simpleMove(ai_ID, Game.getBoard())
 		Game.move(ai_ID, move[0][0], move[0][1], move[1][0], move[1][1])
 		Game.printBoard()
+		make_board.drawBoard(Game.getBoard())
+		time.sleep(2)
 		if (Game.isOver()): break
 		move = Chat.read_chat()
 		while not Game.move(twitch_ID, move[0][0]-1, move[0][1]-1, move[1][0]-1, move[1][1]-1):
 			move = Chat.read_chat()
 		Game.printBoard()
-
+		make_board.drawBoard(Game.getBoard())
+		time.sleep(3)
+		
 # ------------------------------------------------------------------------------
 if (__name__ == '__main__'):
 

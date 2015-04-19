@@ -2,6 +2,14 @@ import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 import math as m
+import sys
+import random
+import time
+import make_board
+sys.path.append('lib')
+
+from checkers import CheckersManager
+from player import Player
 
 #adds point to board
 def add_piece(x_,y_, board, piece):
@@ -20,7 +28,7 @@ def add_piece(x_,y_, board, piece):
                 board[i, j] = piece[i-x_start, j-y_start]
     return board
 
-def drawBoard(board):
+def drawBoard(checkers):
 	#Reads in images
 	board = cv2.imread("images/board.jpg")
 	red = cv2.imread("images/red.png")
@@ -32,19 +40,20 @@ def drawBoard(board):
 	x = 0
 	y = 0
 	none = 0
+	
 	#Looping through given board state and makes board
-	for row in board:
+	for row in checkers:
 		y = 0
 		for piece in row:
 			if piece == None:
 				none  = 0
-			elif piece == "a":
+			elif piece.getOwner() == 'A' and not piece.isKing():
 				board = add_piece(x,y, board, red)
-			elif piece == "A":
+			elif  piece.getOwner() == 'A':
 				board = add_piece(x,y, board, red_king)
-			elif piece == "b":
+			elif piece.getOwner() == 'B' and not piece.isKing():
 				board = add_piece(x,y, board, black)
-			elif piece == "B":
+			elif piece.getOwner() == 'B':
 				board = add_piece(x,y, board, black_king)
 			#Unexpected input from board input
 			else:
@@ -56,4 +65,5 @@ def drawBoard(board):
 	ksize = (2*sigma+1,2*sigma+1)
 	board = cv2.GaussianBlur(board, ksize, sigma)
 	cv2.imwrite("images/current.png", board)
+	print "IMAGE SAVED"
 
