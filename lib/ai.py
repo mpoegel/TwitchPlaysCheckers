@@ -83,7 +83,7 @@ def __possibleJumps(board, id, x, y, j, moves):
 			boardcp[x][y] = None
 			boardcp[x-1][y-1] = None
 			boardcp[x-2][y-2] = puck
-			moves.add( (x-2, y+2, jumps+1) )
+			moves.add( (x-2, y-2, jumps+1) )
 			__possibleJumps(boardcp, id, x-2, y+2, jumps+1, moves)
 
 # ------------------------------------------------------------------------------

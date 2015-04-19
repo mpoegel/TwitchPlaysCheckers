@@ -57,7 +57,7 @@ class CheckersManager(object):
 		puck = board[x][y]
 		boardcp = copy.deepcopy(board)
 		# bounds check
-		if (x > BOARD_SIZE or y > BOARD_SIZE or x <= 0 or y <= 0 or
+		if (x > BOARD_SIZE or y > BOARD_SIZE or x < 0 or y < 0 or
 			self.__board[xp][yp]):
 			return False
 		# check one direction
