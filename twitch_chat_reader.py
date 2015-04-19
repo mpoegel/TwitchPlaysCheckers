@@ -2,6 +2,8 @@ import socket
 import sys
 
 class TwitchChatReader():
+
+	# constructor opens socket to twitch IRC and joins channel
 	def __init__(self):
 		self.server = "irc.twitch.tv"
 		self.password = "oauth:8nq3rymmy4zakeut4p90hx9axnpywj"
@@ -28,6 +30,7 @@ class TwitchChatReader():
 		self.irc.send('NICK ' + self.nickname + '\n')
 		self.irc.send('JOIN ' + self.channel + '\n')
 
+	# wait for the next valid input from the twitch chat
 	def read_chat(self):
 		while True:
 			twitch_activity = self.irc.recv(4096)
@@ -83,13 +86,13 @@ class TwitchChatReader():
 
 					return (r0-1, c0-1), (r1-1, c1-1)
 
-					'''
-	def post_move(r0, c0, r1, c0):
-		alphabet = " ABCDEFGH"
-		if 1 <= r0 <= 8 and 1 <= c0 <= 8 and 1 <= r1 <= 8 and 1 <= c0 <= 8:
-			self.irc.send("PRIVMSG " + self.channel + " :Twitch chose to jump from" + r0 + c0 + " to " + r1 + c1 + "\n")
-			'''
+	# use the bot to announce the chosen move to Twitch chat
+	def post_move(self, r0, c0, r1, c1):
+		alphabet = "ABCDEFGH"
+		if 0 <= r0 <= 7 and 0 <= c0 <= 7 and 0 <= r1 <= 7 and 0 <= c0 <= 7:
+			self.irc.send("PRIVMSG " + self.channel + " :Twitch chose to jump from " + str(alphabet[r0]) + str(c0+1) + " to " + str(alphabet[r1]) + str(c1+1) + "\n")
 
+	# should probably call before terminating program
 	def stop(self):
 		self.irc.close()
 
@@ -99,7 +102,8 @@ if __name__ == '__main__':
 	userInput = TwitchChatReader()
 	while(True):	
 		nextMove = userInput.read_chat()
-		print "MOVE COMMAND: %s" %(str(nextMove))
+		#print "MOVE COMMAND: %s" %(str(nextMove))
+		userInput.post_move(nextMove[0][0], nextMove[0][1], nextMove[1][0], nextMove[1][1])
 
 	userInput.stop()
 '''
