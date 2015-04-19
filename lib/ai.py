@@ -5,24 +5,38 @@
 # ai algorithm to play checkers
 # ==============================================================================
 import copy
-from random import choice
+import random
+
 
 def simpleMove(id, board):
+	size = len(board)
+	moves = set()
+	high = 0
+	high_moves = []
 	for i in range(len(board)):
 		for j in range(len(board)):
-			if (board[i][j] and board[i][j].getOwner() == id):
-				moves = set()
+			puck = board[i][j]
+			moves = set()
+			if (puck and puck.getOwner() == id):
+				if (id == 'A' or (id == 'B' and puck.isKing())):
+					if (i+1 < size and j+1 < size and not board[i+1][j+1]):
+						moves.add( (i+1, j+1, 0) )
+					elif (i+1 < size and j-1 >= 0 and not board[i+1][j-1]):
+						moves.add( (i+1, j-1, 0) )
+				elif (id == 'B' or (id == 'A' and puck.isKing())):
+					if (i-1 >= 0 and j+1 < size and not board[i-1][j+1]):
+						moves.add( (i-1, j+1, 0) )
+					elif (i-1 >= 0 and j-1 >= 0 and not board[i-1][j+1]):
+						moves.add( (i-1, j-1, 0) )
 				__possibleJumps(board, id, i, j, 0, moves)
-				if (not len(moves)): continue
-				high = 0
-				high_moves = []
-				for m in moves:
-					if m[2] > high:
-						high = m[2]
-						high_moves = [((i,j),(m[0],m[1]))]
-					elif m[2] == high:
-						high_moves.append(((i,j),(m[0],m[1])))
-	return choice(high_moves)
+			for m in moves:
+				if m[2] > high:
+					high = m[2]
+					high_moves = [((i,j),(m[0],m[1]))]
+				elif m[2] == high:
+					high_moves.append(((i,j),(m[0],m[1])))
+	return random.choice(high_moves)
+
 
 def __possibleJumps(board, id, x, y, j, moves):
 	size = len(board)

@@ -22,7 +22,6 @@ class Puck(object):
 	def getId(self): return self.__id
 	def getOwner(self): return self.__owner
 	def isKing(self): return self.__isKing
-
 	# MODIFIERS
 	def kingMe(self):
 		if (self.__state):
@@ -138,6 +137,13 @@ class CheckersManager(object):
 					print self.__board[i][j].getOwner().lower(),
 			print '|'
 		print '-' * (BOARD_SIZE*2 + 3)
+	def isOver(self):
+		if (self.__score['A'] == 0):
+			return 'B'
+		elif (self.__score['B'] == 0):
+			return 'A'
+		else:
+			return None
 	# MODIFIERS
 	def move(self, player, x, y, xp, yp):
 		puck = self.__board[x][y]

@@ -32,7 +32,7 @@ class TwitchChatReader():
 		while True:
 			twitch_activity = self.irc.recv(4096)
 			print twitch_activity
-			
+
 			if "PING" in twitch_activity:
 				self.irc.send("PONG tmi.twitch.tv\n")
 				print "PONG tmi.twitch.tv"
@@ -46,9 +46,9 @@ class TwitchChatReader():
 				command = message.strip().split()
 
 				if len(command) == 2:
-					alphabet = " ABCDEFGH"	
+					alphabet = " ABCDEFGH"
 					if len(command[0]) == 2:
-						if command[0][0].isalpha():	
+						if command[0][0].isalpha():
 							r0 = alphabet.find(command[0][0].upper())
 							if r0 == 0:
 								continue
@@ -87,12 +87,10 @@ class TwitchChatReader():
 		self.irc.close()
 
 #################### MAIN - TEST ############################
-'''
 if __name__ == '__main__':
 	userInput = TwitchChatReader()
-	while(True):	
+	while(True):
 		nextMove = userInput.read_chat()
 		print "MOVE COMMAND: %s" %(str(nextMove))
 
 	userInput.stop()
-'''
