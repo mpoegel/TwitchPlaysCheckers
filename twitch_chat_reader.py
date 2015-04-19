@@ -87,10 +87,17 @@ class TwitchChatReader():
 					return (r0-1, c0-1), (r1-1, c1-1)
 
 	# use the bot to announce the chosen move to Twitch chat
-	def post_move(self, r0, c0, r1, c1):
+	def post_move(self, player, r0, c0, r1, c1):
 		alphabet = "ABCDEFGH"
-		if 0 <= r0 <= 7 and 0 <= c0 <= 7 and 0 <= r1 <= 7 and 0 <= c0 <= 7:
-			self.irc.send("PRIVMSG " + self.channel + " :Twitch chose to jump from " + str(alphabet[r0]) + str(c0+1) + " to " + str(alphabet[r1]) + str(c1+1) + "\n")
+		
+		p = None
+		if player == 'A':
+			p = "The AI"
+		elif player == 'B':
+			p = "Twitch"
+
+		if p != None and 0 <= r0 <= 7 and 0 <= c0 <= 7 and 0 <= r1 <= 7 and 0 <= c0 <= 7:
+			self.irc.send("PRIVMSG " + self.channel + " :" + p + " chose to jump from " + str(alphabet[r0]) + str(c0+1) + " to " + str(alphabet[r1]) + str(c1+1) + "\n")
 
 	# should probably call before terminating program
 	def stop(self):
@@ -103,7 +110,7 @@ if __name__ == '__main__':
 	while(True):	
 		nextMove = userInput.read_chat()
 		#print "MOVE COMMAND: %s" %(str(nextMove))
-		userInput.post_move(nextMove[0][0], nextMove[0][1], nextMove[1][0], nextMove[1][1])
+		userInput.post_move("B", nextMove[0][0], nextMove[0][1], nextMove[1][0], nextMove[1][1])
 
 	userInput.stop()
 '''
