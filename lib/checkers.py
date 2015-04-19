@@ -148,10 +148,10 @@ class CheckersManager(object):
 		if (not puck):
 			print("ERROR: No puck found at (" + str(x) +"," + str(y) + ")")
 			return False
-		if (x > BOARD_SIZE or y > BOARD_SIZE or x =< 0 or y =< 0):
+		if (x > BOARD_SIZE or y > BOARD_SIZE or x < 0 or y < 0):
 			print("ERROR: (" + str(x) +"," + str(y) + ") is out of range of the board")
 			return False
-		if (xp > BOARD_SIZE or yp > BOARD_SIZE or xp =< 0 or yp =< 0):
+		if (xp > BOARD_SIZE or yp > BOARD_SIZE or xp < 0 or yp < 0):
 			print("ERROR: (" + str(xp) + "," + str(yp) + ") is out of range of the board")
 			return False
 		if (puck.getOwner() != player.upper()):
