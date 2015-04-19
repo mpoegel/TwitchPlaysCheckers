@@ -128,16 +128,16 @@ class CheckersManager(object):
 	def printBoard(self):
 		print('-' * (BOARD_SIZE*2 + 3))
 		for i in range(BOARD_SIZE):
-			print('| ', end='')
+			print '|',
 			for j in range(BOARD_SIZE):
 				if (not self.__board[i][j]):
-					print('. ', end='')
+					print '.',
 				elif (self.__board[i][j].isKing()):
-					print(self.__board[i][j].getOwner(), end=' ')
+					print self.__board[i][j].getOwner(),
 				else:
-					print(self.__board[i][j].getOwner().lower(), end=' ')
-			print('|')
-		print('-' * (BOARD_SIZE*2 + 3))
+					print self.__board[i][j].getOwner().lower(),
+			print '|'
+		print '-' * (BOARD_SIZE*2 + 3)
 	# MODIFIERS
 	def move(self, player, x, y, xp, yp):
 		puck = self.__board[x][y]
