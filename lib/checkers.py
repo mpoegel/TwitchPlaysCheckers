@@ -2,6 +2,8 @@
 #
 #
 # ==============================================================================
+import copy
+
 BOARD_SIZE = 8
 
 # Helper Game Piece aka Puck Class
@@ -54,7 +56,7 @@ class CheckersManager(object):
 	# PRIVATE METHODS
 	def __isValidMove(self, player, x, y, xp, yp, board):
 		puck = board[x][y]
-		boardcp = board[:]
+		boardcp = copy.deepcopy(board)
 		# bounds check
 		if (x > BOARD_SIZE or y > BOARD_SIZE or x < 0 or y < 0 or
 			self.__board[xp][yp]):
@@ -67,19 +69,27 @@ class CheckersManager(object):
 				board[x+1][y+1] and
 				board[x+1][y+1].getOwner() != player and
 				not board[x+2][y+2]):
+				boardcp[x][y] = None
+				boardcp[x+1][y+1] = None
+				boardcp[x+2][y+2] = puck
 				if (xp == x+2 and yp == y+2):
+					self.__board = copy.deepcopy(boardcp)
 					return True
 				else:
-					return self.__isValidMove(player, x+2, y+2, xp, yp, board)
+					return self.__isValidMove(player, x+2, y+2, xp, yp, boardcp)
 			# jump down and left
 			elif (x+2 < BOARD_SIZE and y-2 >= 0 and
 				board[x+1][y-1] and
 				board[x+1][y-1].getOwner() != player and
 				not board[x+2][y-2]):
+				boardcp[x][y] = None
+				boardcp[x+1][y-1] = None
+				boardcp[x+2][y-2] = puck
 				if (xp == x+2 and yp == y-2):
+					self.__board = copy.deepcopy(boardcp)
 					return True
 				else:
-					return self.__isValidMove(player, x+2, y-2, xp, yp, board)
+					return self.__isValidMove(player, x+2, y-2, xp, yp, boardcp)
 		# check the other direction
 		if ((player == 'B' or (player == 'A' and puck.isKing())) and
 			x-1 >= 0 and y-1 >= 0):
@@ -87,18 +97,26 @@ class CheckersManager(object):
 				board[x-1][y+1] and
 				board[x-1][y+1].getOwner() != player and
 				not board[x-2][y+2]):
+				boardcp[x][y] = None
+				boardcp[x-1][y+1] = None
+				boardcp[x-2][y+2] = puck
 				if (xp == x-2 and yp == y+2):
+					self.__board = copy.deepcopy(boardcp)
 					return True
 				else:
-					return self.__isValidMove(player, x-2, y+2, xp, yp, board)
+					return self.__isValidMove(player, x-2, y+2, xp, yp, boardcp)
 			elif (x-2 >= 0 and y-2 >= 0 and
 				board[x-1][y-1] and
 				board[x-1][y-1].getOwner() != player and
 				not board[x-2][y-2]):
+				boardcp[x][y] = None
+				boardcp[x-2][y-2] = None
+				boardcp[x-2][y-2] = puck
 				if (xp == x-2 and yp == y-2):
+					self.__board = copy.deepcopy(boardcp)
 					return True
 				else:
-					return self.__isValidMove(player, x-2, y-2, xp, yp, board)
+					return self.__isValidMove(player, x-2, y-2, xp, yp, boardcp)
 	# ACCESSORS
 	def getBoard(self): return self.__board
 	def printBoard(self):
@@ -136,20 +154,27 @@ class CheckersManager(object):
 			if (xp == x+1 and yp == y+1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				return True
 			elif (xp == x+1 and yp == y-1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				return True
 		elif (player == 'B' or (player == 'A' and puck.isKing())):
 			if (xp == x-1 and yp == y+1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
+				return True
 			elif (xp == x-1 and yp == y-1 and not self.__board[xp][yp]):
 				self.__board[x][y] = None
 				self.__board[xp][yp] = puck
-		if (self.__isValidMove(player, x, y, xp, yp, self.__board)):
+				return True
+		if (self.__isValidMove(player, x, y, xp, yp, copy.deepcopy(self.__board))):
 			self.__board[x][y] = None
 			self.__board[xp][yp] = puck
+			return True
 
+		print("Move failed")
+		return False
 
 # ------------------------------------------------------------------------------
 if (__name__ == '__main__'):
@@ -158,9 +183,14 @@ if (__name__ == '__main__'):
 
 	game.printBoard()
 	game.move('A', 2,0, 3,1)
+	game.printBoard()
 	game.move('A', 3,1, 4,2)
+	game.printBoard()
 	game.move('B', 5,1, 3,3)
+	game.printBoard()
 	game.move('B', 5,7, 4,6)
+	game.printBoard()
 	game.move('B', 6,6, 5,7)
+	game.printBoard()
 	game.move('A', 2,2, 6,6)
 	game.printBoard()
